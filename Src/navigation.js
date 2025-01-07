@@ -1,11 +1,12 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
 
 export default function Navigation() {
   return (
-    <View>
-      <Text>navigation</Text>
-    </View>
+    <NavigationContainer>
+      
+    </NavigationContainer>
   )
 }
 
