@@ -1,8 +1,9 @@
-import { StyleSheet, Text, TextInput, TouchableOpacity, View, Dimensions, StatusBar } from 'react-native';
+import { StyleSheet, Text, TextInput, TouchableOpacity, View, StatusBar } from 'react-native';
 import React from 'react';
 import { FlatList } from 'react-native-gesture-handler';
 import getCardColor from '../components/cardColor';
 import { useNavigation } from '@react-navigation/native';
+
 
 const DATA = [
   {
@@ -34,62 +35,79 @@ const DATA = [
 export default function Home() {
   const navigation = useNavigation()
   return (
-    <View style = {{flex:1, backgroundColor:'#fff', paddingTop:10}}>
+    <View style={styles.container}>
       <StatusBar backgroundColor={'#fff'} barStyle={'dark-content'}/>
-      <Text style = {styles.heading}>My Notes</Text>
-      <View style = {styles.body}>
+      <View style={styles.header}>
+        <Text style={styles.heading}>My Notes</Text>
+      </View>
+      <View style={styles.body}>
         <View style={styles.searchContainer}>
           <TextInput
             placeholder='Search notes...'
-            style = {styles.search}
+            style={styles.search}
             placeholderTextColor="#666"
           />
         </View>
         <View style={styles.listContainer}>
-            <FlatList
-              data={DATA}
-              keyExtractor={(item) => item.id || ''}
-              contentContainerStyle = {{paddingHorizontal: 8, paddingTop: 10, paddingBottom: 20}}
-              columnWrapperStyle = {{gap:12}}
-              numColumns={2}
-              renderItem={({item}) => {
-                return(
-                  <TouchableOpacity
-                    style={styles.cardWrapper}
-                    activeOpacity={0.6}
-                    onPress={() => navigation.navigate('AddNote')}
-                  >
-                    <View style = {[styles.card, { backgroundColor: getCardColor() }]}>
-                      <View style = {styles.cardHeading}>
-                        <Text style={styles.cardTitle} numberOfLines={1}>{item.title}</Text>
-                      </View>
-                      <Text style={styles.cardDescription} numberOfLines={4}>
-                        {item.description}
-                      </Text>
-                      <Text style={styles.cardDate}>{item.date}</Text>
-                    </View>
-                  </TouchableOpacity>
-                );
-              }}
-            />
+          <FlatList
+            data={DATA}
+            keyExtractor={(item) => item.id || ''}
+            contentContainerStyle={{paddingHorizontal: 8, paddingVertical: 15}}
+            columnWrapperStyle={{gap:12}}
+            numColumns={2}
+            showsVerticalScrollIndicator={false}
+            renderItem={({item}) => (
+              <TouchableOpacity
+                style={styles.cardWrapper}
+                activeOpacity={0.7}
+                onPress={() => navigation.navigate('AddNote')}
+              >
+                <View style={[styles.card, { backgroundColor: getCardColor() }]}>
+                  <View style={styles.cardHeading}>
+                    <Text style={styles.cardTitle} numberOfLines={1}>{item.title}</Text>
+                  </View>
+                  <Text style={styles.cardDescription} numberOfLines={4}>
+                    {item.description}
+                  </Text>
+                  <Text style={styles.cardDate}>{item.date}</Text>
+                </View>
+              </TouchableOpacity>
+            )}
+          />
         </View>
       </View>
+      <TouchableOpacity
+        style={styles.fab}
+        activeOpacity={0.8}
+        onPress={() => navigation.navigate('AddNote')}
+      >
+        <Text style = {{fontSize:35, color:'#fff'}}>+</Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  heading:{
-    textAlign:'center',
-    fontSize:28,
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  header: {
+    paddingTop: 15,
+    paddingBottom: 10,
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0',
+  },
+  heading: {
+    textAlign: 'center',
+    fontSize: 24,
     fontWeight: '700',
     color: '#2c3e50',
-    marginVertical: 15,
   },
-  body:{
-    marginTop:20,
-    flex:1,
-    marginHorizontal:15,
+  body: {
+    flex: 1,
+    paddingHorizontal: 15,
   },
   searchContainer: {
     flexDirection: 'row',
@@ -100,14 +118,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingVertical: 8,
     backgroundColor: '#fff',
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.15,
-    shadowRadius: 2,
-    marginHorizontal: 5,
+    marginTop: 15,
+    marginBottom: 5,
   },
-  search:{
+  searchIcon: {
+    marginRight: 8,
+  },
+  search: {
     flex: 1,
     fontSize: 16,
     color: '#333',
@@ -115,30 +132,25 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     flex: 1,
-    marginTop: 25,
   },
   cardWrapper: {
     flex: 1,
     maxWidth: '50%',
-    height: 170,
   },
-  card:{
+  card: {
     flex: 1,
     borderRadius: 16,
     padding: 15,
-    margin: 2,
-    elevation: 3,
+    minHeight: 160,
+    elevation: 2,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.15,
-    shadowRadius: 3,
-    justifyContent: 'space-between',
-    borderWidth: 1,
-    borderColor: '#f0f0f0',
-    marginBottom:20
+    shadowRadius: 2,
+    marginBottom: 12,
   },
-  cardHeading:{
-    marginBottom: 6,
+  cardHeading: {
+    marginBottom: 8,
   },
   cardTitle: {
     fontSize: 17,
@@ -157,5 +169,21 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     marginTop: 8,
     textAlign: 'right',
+  },
+  fab: {
+    position: 'absolute',
+    right: 20,
+    bottom: 20,
+    backgroundColor: '#2c3e50',
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
   },
 });
