@@ -6,7 +6,9 @@ export default function Addnote() {
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor={'#fff'} barStyle={'dark-content'}/>
-      <BackButton style={styles.backbutton}/>
+      <View style = {styles.backbutton}>
+        <BackButton/>
+      </View>
       <Text style={styles.heading}>Add Note</Text>
       <View style={styles.inputContainer}>
         <TextInput
@@ -35,7 +37,7 @@ const styles = StyleSheet.create({
   backbutton: {
     position: 'absolute',
     zIndex: 1,
-    top: 17,
+    top: 26,
     left: 13,
   },
   heading: {
@@ -48,6 +50,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     flex: 1,
     padding: 20,
+    marginTop:10,
   },
   titleInput: {
     fontSize: 20,
